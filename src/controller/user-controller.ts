@@ -8,8 +8,7 @@ export class UserController {
 
     public getUserById = async (req: Request, res: Response) => {
         try {
-            const id = req.params.id as string 
-    
+            const id = {id: req.params.id as string} 
             const output = await this.userBusiness.getUserById(id)
             
             res.status(200).send(output)
