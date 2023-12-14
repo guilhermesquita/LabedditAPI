@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { UserBusiness } from '../business'
+import { BaseError } from '../errors'
 
 export class UserController {
     constructor(
@@ -14,8 +15,8 @@ export class UserController {
             res.status(200).send(output)
     
         } catch (error) {
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
             } else {
                 res.status(500).send('unexpected error')
             }
