@@ -50,6 +50,7 @@ export class UserBusiness {
 
         const output: CreateUserOutputDTO = {
             message: 'Usuário Criado com sucesso!',
+            id: newUser.getId(),
             token: token
         }
 

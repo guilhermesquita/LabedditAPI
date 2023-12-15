@@ -8,6 +8,7 @@ export interface CreateUserInputDTO {
 
 export interface CreateUserOutputDTO {
     message: string;
+    id: string;
     token: string
 }
 
