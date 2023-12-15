@@ -6,4 +6,5 @@ export interface GetUserByIdInputDTO {
 export interface GetUserByIdOutputDTO {
     id: string;
     name: string;
+    email: string;
 }

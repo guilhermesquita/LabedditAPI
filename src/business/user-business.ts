@@ -36,10 +36,13 @@ export class UserBusiness {
     public getUserById = async (input: GetUserByIdInputDTO) => {
         const { id, token } = input
 
+        // console.log(input.token)
         // const payload = this.tokenManager.getPayload(token)
-        // if (payload === null) {
-        //     throw new BadRequestError("token inválido")
-        // }
+        // // console.log(payload)
+
+        // // if (payload === null) {
+        // //     throw new BadRequestError("token inválido")
+        // // }
 
         const userDb: UserDB = await this.userDatabase.getUserById(id)
 
@@ -49,7 +52,8 @@ export class UserBusiness {
 
         const output: GetUserByIdOutputDTO = {
             id: userDb.id,
-            name: userDb.name
+            name: userDb.name,
+            email: userDb.email
         }
         return output
     }
