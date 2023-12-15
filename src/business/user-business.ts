@@ -2,13 +2,14 @@ import { UserDatabase } from "../database/user-database"
 import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO } from "../dtos"
 import { User, UserDB } from "../entity"
 import { NotFoundError } from "../errors"
-import { IdGenerator } from "../services"
+import { IdGenerator, TokenManager, TokenPayload } from "../services"
 
 export class UserBusiness {
 
     constructor(
         private userDatabase: UserDatabase,
-        private idGenerator: IdGenerator
+        private idGenerator: IdGenerator,
+        private tokenManager: TokenManager
     ) { }
 
     public getUserById = async (input: GetUserByIdInputDTO) => {
@@ -40,9 +41,18 @@ export class UserBusiness {
         const newUserDb = newUser.createDBModel()
         await this.userDatabase.createUser(newUserDb)
 
-        // const output: CreateUserOutputDTO = {
-        //     message: 'Usuário Criado com sucesso!',
-        //     token: 
-        // }
+        const tokenPayload: TokenPayload = {
+            id: newUser.getId(),
+            name: newUser.getName()
+    }
+
+        const token = this.tokenManager.createToken(tokenPayload)
+
+        const output: CreateUserOutputDTO = {
+            message: 'Usuário Criado com sucesso!',
+            token: token
+        }
+
+        return output
     }
 }
