@@ -1,7 +1,7 @@
 import { UserDatabase } from "../database/user-database"
 import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO } from "../dtos"
 import { User, UserDB } from "../entity"
-import { NotFoundError } from "../errors"
+import { BadRequestError, NotFoundError } from "../errors"
 import { IdGenerator, TokenManager, TokenPayload } from "../services"
 
 export class UserBusiness {
@@ -29,6 +29,11 @@ export class UserBusiness {
         const {name, email, password} = input
 
         const id = this.idGenerator.generate()
+
+        const userEmail = await this.userDatabase.checkUserByEmail(email)
+        if(userEmail){
+            throw new BadRequestError('Email já cadastrado')
+        }
 
         const newUser = new User(
             id,

@@ -10,6 +10,11 @@ export class UserDatabase extends BaseDatabase {
         return userDB
     }
 
+    public checkUserByEmail = async (email: string) => {
+      const userDB = await BaseDatabase.connection(UserDatabase.TABLE_USER).select().where({ email: email });
+      return userDB
+  }
+
     public async createUser(
         newUserDB: UserDB
       ): Promise<void> {
