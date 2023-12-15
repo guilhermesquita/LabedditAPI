@@ -1,3 +1,4 @@
+import { UserDB } from "../entity";
 import { BaseDatabase } from "./baseDatabase";
 
 export class UserDatabase extends BaseDatabase {
@@ -5,12 +6,15 @@ export class UserDatabase extends BaseDatabase {
     public static TABLE_USER = "user";
 
     public getUserById = async (id: string) => {
-        const userDB = await BaseDatabase.connection(UserDatabase.TABLE_USER).select().where({id: id}).first();
+        const userDB = await BaseDatabase.connection(UserDatabase.TABLE_USER).select().where({ id: id }).first();
         return userDB
     }
 
-    // public getAllProductsByName = async (q:string) => {
-    //     const productsDB = await BaseDatabase.connection(ProductDatabase.TABLE_PRODUCTS).select().where("name", "LIKE", `%${q}%`)
-    //     return productsDB
-    // }
+    public async createUser(
+        newUserDB: UserDB
+      ): Promise<void> {
+        await BaseDatabase
+          .connection(UserDatabase.TABLE_USER)
+          .insert(newUserDB)
+      }
 }

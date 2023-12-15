@@ -1,12 +1,17 @@
 import express from 'express'
 import { userRouter } from './routes'
 import cors from 'cors'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.listen(3005, () => console.log('listening on http://localhost/3005'))
+app.listen(Number(process.env.PORT || 3005), () => {
+    console.log(`Servidor rodando na porta ${process.env.PORT}`)
+})
 
 // GET /users
 app.use('/v2/users', userRouter)
