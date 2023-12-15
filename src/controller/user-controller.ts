@@ -11,8 +11,11 @@ export class UserController {
 
     public getUserById = async (req: Request, res: Response) => {
         try {
-            const id = { id: req.params.id as string }
-            const output = await this.userBusiness.getUserById(id)
+            const input = {
+                id: req.params.id as string,
+                token: req.headers.authorization as string
+            }
+            const output = await this.userBusiness.getUserById(input)
 
             res.status(200).send(output)
 

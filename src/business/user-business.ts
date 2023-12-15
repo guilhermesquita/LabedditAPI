@@ -13,8 +13,16 @@ export class UserBusiness {
     ) { }
 
     public getUserById = async (input: GetUserByIdInputDTO) => {
-        const userDb: UserDB = await this.userDatabase.getUserById(input.id)
-        if(!userDb){
+        const { id, token } = input
+
+        // const payload = this.tokenManager.getPayload(token)
+        // if (payload === null) {
+        //     throw new BadRequestError("token inválido")
+        // }
+
+        const userDb: UserDB = await this.userDatabase.getUserById(id)
+
+        if (!userDb) {
             throw new NotFoundError('Usuário não encontrado')
         }
 
@@ -26,12 +34,12 @@ export class UserBusiness {
     }
 
     public createUser = async (input: CreateUserInputDTO) => {
-        const {name, email, password} = input
+        const { name, email, password } = input
 
         const id = this.idGenerator.generate()
 
         const userEmail = await this.userDatabase.checkUserByEmail(email)
-        if(userEmail){
+        if (userEmail) {
             throw new BadRequestError('Email já cadastrado')
         }
 
@@ -49,7 +57,7 @@ export class UserBusiness {
         const tokenPayload: TokenPayload = {
             id: newUser.getId(),
             name: newUser.getName()
-    }
+        }
 
         const token = this.tokenManager.createToken(tokenPayload)
 
