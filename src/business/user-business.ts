@@ -1,5 +1,5 @@
 import { UserDatabase } from "../database/user-database"
-import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO } from "../dtos"
+import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO} from "../dtos"
 import { User, UserDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
 import { IdGenerator, TokenManager, TokenPayload } from "../services"
@@ -11,6 +11,27 @@ export class UserBusiness {
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
     ) { }
+
+    public loginUser = async (input: LoginUserInputDTO) => {
+        const userDb: UserDB = await this.userDatabase.loginUser(input)
+        if (!userDb) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        const tokenPayload: TokenPayload = {
+            id: userDb.id,
+            name: userDb.name
+        }
+
+        const token = this.tokenManager.createToken(tokenPayload)
+
+        const output: LoginUserOutputDTO = {
+            message: 'Login realizado com sucesso!',
+            token: token
+        }
+
+        return output
+    }
 
     public getUserById = async (input: GetUserByIdInputDTO) => {
         const { id, token } = input
@@ -39,7 +60,7 @@ export class UserBusiness {
         const id = this.idGenerator.generate()
 
         const userEmail = await this.userDatabase.checkUserByEmail(email)
-        if (userEmail) {
+        if (userEmail.length) {
             throw new BadRequestError('Email já cadastrado')
         }
 

@@ -1,12 +1,10 @@
 import express from 'express'
 import { UserController } from '../controller';
-import { UserBusiness } from '../business';
 import { UserDatabase } from '../database/user-database';
 import { IdGenerator, TokenManager } from '../services';
+import { UserBusiness } from '../business';
 
-export const userRouter = express.Router();
-
-//Injenção de dependecias
+export const loginRouter = express.Router();
 const userBusiness = new UserBusiness(
     new UserDatabase(),
     new IdGenerator(),
@@ -16,6 +14,4 @@ const userController = new UserController(
     userBusiness
 );
 
-//Implementação das rotas
-userRouter.get('/:id', userController.getUserById)
-userRouter.post('/', userController.createUser)
+loginRouter.post('/login', userController.loginUser)
