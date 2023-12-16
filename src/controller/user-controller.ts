@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { UserBusiness } from '../business'
 import { BaseError } from '../errors'
-import { CreateUserSchema } from '../dtos'
+import { CreateUserSchema, GetUserByIdSchema } from '../dtos'
 import { ZodError } from 'zod'
 
 export class UserController {
@@ -31,10 +31,11 @@ export class UserController {
 
     public getUserById = async (req: Request, res: Response) => {
         try {
-            const input = {
-                id: req.params.id as string,
-                token: req.headers.authorization as string
-            }
+            const input = GetUserByIdSchema.parse({
+                id: req.params.id,
+                token: req.headers.authorization
+            })
+
             const output = await this.userBusiness.getUserById(input)
 
             res.status(200).send(output)

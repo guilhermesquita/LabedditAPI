@@ -1,5 +1,5 @@
 import { UserDatabase } from "../database/user-database"
-import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO} from "../dtos"
+import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO } from "../dtos"
 import { User, UserDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
 import { IdGenerator, TokenManager, TokenPayload } from "../services"
@@ -30,31 +30,6 @@ export class UserBusiness {
             token: token
         }
 
-        return output
-    }
-
-    public getUserById = async (input: GetUserByIdInputDTO) => {
-        const { id, token } = input
-
-        // console.log(input.token)
-        // const payload = this.tokenManager.getPayload(token)
-        // // console.log(payload)
-
-        // // if (payload === null) {
-        // //     throw new BadRequestError("token inválido")
-        // // }
-
-        const userDb: UserDB = await this.userDatabase.getUserById(id)
-
-        if (!userDb) {
-            throw new NotFoundError('Usuário não encontrado')
-        }
-
-        const output: GetUserByIdOutputDTO = {
-            id: userDb.id,
-            name: userDb.name,
-            email: userDb.email
-        }
         return output
     }
 
@@ -92,6 +67,29 @@ export class UserBusiness {
             token: token
         }
 
+        return output
+    }
+
+    public getUserById = async (input: GetUserByIdInputDTO) => {
+        const { id, token } = input
+
+        const payload = this.tokenManager.getPayload(token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const userDb: UserDB = await this.userDatabase.getUserById(id)
+
+        if (!userDb) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        const output: GetUserByIdOutputDTO = {
+            id: userDb.id,
+            name: userDb.name,
+            email: userDb.email
+        }
         return output
     }
 }
