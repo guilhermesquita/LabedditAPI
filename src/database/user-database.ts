@@ -22,7 +22,7 @@ export class UserDatabase extends BaseDatabase {
       password: input.password
     }
 
-    const userDB = await BaseDatabase.connection(UserDatabase.TABLE_USER).select().where({email: input.email}).first();
+    const userDB = await BaseDatabase.connection(UserDatabase.TABLE_USER).select().where(login).first();
     return userDB
   }
 
