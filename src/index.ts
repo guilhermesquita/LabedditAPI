@@ -1,5 +1,5 @@
 import express from 'express'
-import { userRouter } from './routes'
+import { postRouter, userRouter } from './routes'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { loginRouter } from './routes/loginRouter'
@@ -17,3 +17,6 @@ app.listen(Number(process.env.PORT || 3005), () => {
 // GET /users
 app.use('/v2/users', userRouter)
 app.use('/v2', loginRouter)
+
+// GET /posts
+app.use('/v2/posts', postRouter)

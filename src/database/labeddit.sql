@@ -20,7 +20,7 @@ CREATE TABLE post(
     dislike INT NOT NULL,
     rl_user TEXT NOT NULL REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE, 
     created_at TEXT DEFAULT (DATETIME()),
-    edited_at TEXT DEFAULT (DATETIME()),
+    edited_at TEXT,
     FOREIGN KEY (rl_user) REFERENCES user(id)
 );
 
