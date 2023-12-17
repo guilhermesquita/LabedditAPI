@@ -1,3 +1,4 @@
+import { PostDB } from "../entity";
 import { BaseDatabase } from "./baseDatabase";
 
 export class PostDatabase extends BaseDatabase {
@@ -14,6 +15,9 @@ export class PostDatabase extends BaseDatabase {
         return postDB
     }
 
+    public async createPost(newPost: PostDB): Promise<void> {
+        await BaseDatabase.connection(PostDatabase.TABLE_POST).insert(newPost)
+    }
     // public getAllBrandsByName = async (q:string) => {
     //     const brandsDB = await BaseDatabase.connection(PostDatabase.TABLE_POST).select().where("name", "LIKE", `%${q}%`)
     //     return brandsDB
