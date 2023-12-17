@@ -2,6 +2,7 @@ import express from 'express'
 import { PostController } from '../controller';
 import { PostBusiness } from '../business';
 import { PostDatabase } from '../database/post-database';
+import { TokenManager } from '../services';
 
 export const postRouter = express.Router();
 
@@ -9,7 +10,7 @@ export const postRouter = express.Router();
 const postBusiness = new PostBusiness(
     new PostDatabase(),
     // new IdGenerator(),
-    // new TokenManager()
+    new TokenManager()
 )
 const postController = new PostController(
     postBusiness
