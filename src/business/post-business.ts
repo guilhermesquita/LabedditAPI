@@ -1,5 +1,5 @@
 import { PostDatabase } from "../database/post-database"
-import { CreatePostInputDTO, GetAllPostInputDTO } from "../dtos"
+import { CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO } from "../dtos"
 import { Post, PostDB } from "../entity"
 import { BadRequestError } from "../errors"
 import { IdGenerator, TokenManager } from "../services"
@@ -27,7 +27,7 @@ export class PostBusiness {
     public createPost = async (input: CreatePostInputDTO) => {
         const { content, rl_user, token } = input
 
-        const payload = this.tokenManager.getPayload(input.token)
+        const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("token inválido")
         }
@@ -46,5 +46,12 @@ export class PostBusiness {
 
         const newPostDb = newPost.createDBModel()
         await this.postDatabase.createPost(newPostDb)
+
+        const output: CreatePostOutputDTO = {
+            id: newPostDb.id,
+            message: 'Publicação compartilhada com sucesso!'
+        }
+
+        return output
     }
 }

@@ -2,14 +2,14 @@ import express from 'express'
 import { PostController } from '../controller';
 import { PostBusiness } from '../business';
 import { PostDatabase } from '../database/post-database';
-import { TokenManager } from '../services';
+import { IdGenerator, TokenManager } from '../services';
 
 export const postRouter = express.Router();
 
 //Injenção de dependecias
 const postBusiness = new PostBusiness(
     new PostDatabase(),
-    // new IdGenerator(),
+    new IdGenerator(),
     new TokenManager()
 )
 const postController = new PostController(
@@ -18,4 +18,4 @@ const postController = new PostController(
 
 //Implementação das rotas
 postRouter.get('/', postController.getAllPost)
-// postRouter.post('/', userController.createUser)
+postRouter.post('/', postController.createPost)
