@@ -34,11 +34,31 @@ export class PostBusiness {
 
         const id = this.idGenerator.generate()
 
+        const totalComment = await this.postDatabase.countComments(id)
+        const totalLike = await this.postDatabase.countLikes(id)
+        const totalDislike = await this.postDatabase.countDislikes(id)
+
+        let comments
+        if (totalComment) {
+            comments = totalComment['count(*)'];
+        }
+
+        let likes
+        if (totalLike) {
+            likes = totalLike['count(*)'];
+        }
+
+        let dislikes
+        if (totalDislike) {
+            dislikes = totalDislike['count(*)'];
+        }        
+
         const newPost = new Post(
             id,
             content,
-            0,
-            0,
+            comments as number,
+            likes as number,
+            dislikes as number,
             rl_user,
             new Date().toISOString(),
             null

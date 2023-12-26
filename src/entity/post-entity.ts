@@ -1,6 +1,7 @@
 export interface PostDB {
     id: string
     content: string
+    comments: number
     like: number
     dislike: number
     rl_user: string
@@ -12,6 +13,7 @@ export class Post {
     constructor(
     private id: string,
     private content: string,
+    private comments: number,
     private like: number,
     private dislike: number,
     private rl_user: string,
@@ -34,6 +36,15 @@ export class Post {
     public setContent(value: string): void {
         this.content = value
     }
+
+    public getComment(): number {
+        return this.comments
+    }
+
+    public setComment(value: number): void {
+        this.comments = value
+    }
+     
 
     public getLike(): number {
         return this.like
@@ -67,6 +78,7 @@ export class Post {
         return {
             id: this.id,
             content: this.content,
+            comments: this.comments,
             like: this.like,
             dislike: this.dislike,
             created_at: this.created_at,

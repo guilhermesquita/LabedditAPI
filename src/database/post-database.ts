@@ -18,8 +18,16 @@ export class PostDatabase extends BaseDatabase {
     public async createPost(newPost: PostDB): Promise<void> {
         await BaseDatabase.connection(PostDatabase.TABLE_POST).insert(newPost)
     }
-    // public getAllBrandsByName = async (q:string) => {
-    //     const brandsDB = await BaseDatabase.connection(PostDatabase.TABLE_POST).select().where("name", "LIKE", `%${q}%`)
-    //     return brandsDB
-    // }
+
+    public async countComments(id: string) {
+        return await BaseDatabase.connection('comment').count().where({rl_post: id}).first();
+    }
+
+    public async countLikes(id: string) {
+        return await BaseDatabase.connection('rl_like_dislike_post').count().where({rl_post: id, like: 1}).first();
+    }
+    
+    public async countDislikes(id: string) {
+        return await BaseDatabase.connection('rl_like_dislike_post').count().where({rl_post: id, like: 0}).first();
+    }
 }
