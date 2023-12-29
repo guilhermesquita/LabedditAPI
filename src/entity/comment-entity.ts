@@ -5,26 +5,30 @@ export interface CommentDB {
     like: number
     dislike: number
     rl_user: string
+    rl_post?: string
+    rl_comment?: string
     created_at: string
-    updated_at?: string
+    updated_at?: string | null
 }
 
 export class Comment {
     constructor(
-    private id: string,
-    private content: string,
-    private comments: number,
-    private like: number,
-    private dislike: number,
-    private rl_user: string,
-    private created_at: string,
-    private updated_at: string | null
-    ) {}
+        private id: string,
+        private content: string,
+        private comments: number,
+        private like: number,
+        private dislike: number,
+        private rl_user: string,
+        private created_at: string,
+        private updated_at: string | null,
+        private rl_post?: string,
+        private rl_comment?: string
+    ) { }
 
     public getId(): string {
         return this.id
     }
-    
+
     public setId(value: string): void {
         this.id = value
     }
@@ -44,7 +48,6 @@ export class Comment {
     public setComment(value: number): void {
         this.comments = value
     }
-     
 
     public getLike(): number {
         return this.like
@@ -53,7 +56,7 @@ export class Comment {
     public setLike(value: number): void {
         this.like = value
     }
-     
+
     public getDislike(): number {
         return this.dislike
     }
@@ -66,21 +69,31 @@ export class Comment {
         return this.rl_user
     }
 
+    public getRlPost(): string | undefined {
+        return this.rl_post
+    }
+
+    public getRlComment(): string | undefined {
+        return this.rl_comment
+    }
+
     public getCreatedAt(): string {
         return this.created_at
     }
 
-    public getUpdatedAt(): string|null {
+    public getUpdatedAt(): string | null {
         return this.updated_at
     }
 
-    public createDBModel(): CommentDB{
+    public createDBModel(): CommentDB {
         return {
             id: this.id,
             content: this.content,
             comments: this.comments,
             like: this.like,
             dislike: this.dislike,
+            rl_post: this.rl_post,
+            rl_comment: this.rl_comment,
             created_at: this.created_at,
             rl_user: this.rl_user
         }

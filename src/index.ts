@@ -1,5 +1,5 @@
 import express from 'express'
-import { postRouter, userRouter } from './routes'
+import { commentRouter, postRouter, userRouter } from './routes'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { loginRouter } from './routes/loginRouter'
@@ -20,3 +20,6 @@ app.use('/v2', loginRouter)
 
 // GET /posts
 app.use('/v2/posts', postRouter)
+
+// GET /comments
+app.use('/v2/comments', commentRouter)

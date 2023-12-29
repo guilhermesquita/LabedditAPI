@@ -1,6 +1,6 @@
 import { CommentDatabase } from "../database/comment-database"
-import { CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO } from "../dtos"
-import { Post, PostDB } from "../entity"
+import { CreateCommentInputDTO, CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO } from "../dtos"
+import { Comment, Post, PostDB } from "../entity"
 import { BadRequestError } from "../errors"
 import { IdGenerator, TokenManager } from "../services"
 
@@ -24,12 +24,16 @@ export class CommentBusiness {
     //     return postDb
     // }
 
-    public createComment = async (input: CreatePostInputDTO) => {
-        const { content, rl_user, token } = input
+    public createComment = async (input: CreateCommentInputDTO) => {
+        const { content, rl_user, rl_comment, rl_post, token } = input
 
         const payload = this.tokenManager.getPayload(token)
         if (payload === null) {
             throw new BadRequestError("token inválido")
+        }
+
+        if(!rl_comment && !rl_post) {
+            throw new BadRequestError("Escolha o comentário ou post vinculado")
         }
 
         const id = this.idGenerator.generate()
@@ -53,7 +57,7 @@ export class CommentBusiness {
             dislikes = totalDislike['count(*)'];
         }        
 
-        const newPost = new Post(
+        const newPost = new Comment(
             id,
             content,
             comments as number,
@@ -61,7 +65,9 @@ export class CommentBusiness {
             dislikes as number,
             rl_user,
             new Date().toISOString(),
-            null
+            null,
+            rl_post,
+            rl_comment
         )
 
         const newPostDb = newPost.createDBModel()
