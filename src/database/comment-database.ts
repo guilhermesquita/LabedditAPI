@@ -5,14 +5,23 @@ export class CommentDatabase extends BaseDatabase {
 
     public static TABLE_COMMENT = "comment";
 
-    public getAllComments = async (q: string|undefined) => {
+    public getAllComments = async (q: string | undefined) => {
 
-        if(q) {
-            return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().where({id: q})
+        if (q) {
+            return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().where({ id: q })
         }
 
         const commentDB = await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().orderBy('created_at', 'desc')
         return commentDB
+    }
+
+    public setNumberCommentPost = async (rl_post: string | undefined, total: number) => {
+        return await BaseDatabase.connection('post')
+        .update('comments', total + 1).where({ id: rl_post })
+    }
+
+    public getPostById = async (id: string | undefined) => {
+        return await BaseDatabase.connection('post').select().where({id: id}).first()
     }
 
     public async createComment(newComment: CommentDB): Promise<void> {
@@ -20,14 +29,14 @@ export class CommentDatabase extends BaseDatabase {
     }
 
     public async countComments(id: string) {
-        return await BaseDatabase.connection('comment').count().where({rl_post: id}).first();
+        return await BaseDatabase.connection('comment').count().where({ rl_post: id }).first();
     }
 
     public async countLikes(id: string) {
-        return await BaseDatabase.connection('rl_like_dislike_post').count().where({rl_post: id, like: 1}).first();
+        return await BaseDatabase.connection('rl_like_dislike_post').count().where({ rl_post: id, like: 1 }).first();
     }
-    
+
     public async countDislikes(id: string) {
-        return await BaseDatabase.connection('rl_like_dislike_post').count().where({rl_post: id, like: 0}).first();
+        return await BaseDatabase.connection('rl_like_dislike_post').count().where({ rl_post: id, like: 0 }).first();
     }
 }

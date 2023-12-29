@@ -8,7 +8,7 @@ export class PostDatabase extends BaseDatabase {
     public getAllPosts = async (q: string|undefined) => {
 
         if(q) {
-            return await BaseDatabase.connection(PostDatabase.TABLE_POST).select().where({id: q})
+            return await BaseDatabase.connection(PostDatabase.TABLE_POST).select().where({id: q}).first()
         }
 
         const postDB = await BaseDatabase.connection(PostDatabase.TABLE_POST).select().orderBy('created_at', 'desc')

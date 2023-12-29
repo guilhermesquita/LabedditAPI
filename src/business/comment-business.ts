@@ -1,6 +1,7 @@
 import { CommentDatabase } from "../database/comment-database"
+import { PostDatabase } from "../database/post-database"
 import { CreateCommentInputDTO, CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO } from "../dtos"
-import { Comment, Post, PostDB } from "../entity"
+import { Comment } from "../entity"
 import { BadRequestError } from "../errors"
 import { IdGenerator, TokenManager } from "../services"
 
@@ -32,7 +33,7 @@ export class CommentBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        if(!rl_comment && !rl_post) {
+        if (!rl_comment && !rl_post) {
             throw new BadRequestError("Escolha o comentário ou post vinculado")
         }
 
@@ -55,9 +56,9 @@ export class CommentBusiness {
         let dislikes
         if (totalDislike) {
             dislikes = totalDislike['count(*)'];
-        }        
+        }
 
-        const newPost = new Comment(
+        const newComment = new Comment(
             id,
             content,
             comments as number,
@@ -70,11 +71,16 @@ export class CommentBusiness {
             rl_comment
         )
 
-        const newPostDb = newPost.createDBModel()
-        await this.commentDatabase.createComment(newPostDb)
+        if (rl_post !== undefined) {
+            const totalCommentPost = await this.commentDatabase.getPostById(rl_post)
+            await this.commentDatabase.setNumberCommentPost(rl_post, totalCommentPost.comments)
+        }
+
+        const newCommentDb = newComment.createDBModel()
+        await this.commentDatabase.createComment(newCommentDb)
 
         const output: CreatePostOutputDTO = {
-            id: newPostDb.id,
+            id: newCommentDb.id,
             message: 'Publicação compartilhada com sucesso!'
         }
 
