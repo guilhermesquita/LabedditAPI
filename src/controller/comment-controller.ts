@@ -8,25 +8,25 @@ export class CommentController {
         private commentBusiness: CommentBusiness
     ) { }
 
-    // public getAllPost = async (req: Request, res: Response) => {
-    //     try {
-    //         const input = {
-    //             q: req.query.q as string | undefined,
-    //             token: req.headers.authorization as string
-    //         }
+    public getCommentByPostCommentId = async (req: Request, res: Response) => {
+        try {
+            const input = {
+                id: req.params.id as string,
+                token: req.headers.authorization as string
+            }
 
-    //         const output = await this.postBusiness.getAllPost(input)
+            const output = await this.commentBusiness.getCommentByPostCommentId(input)
 
-    //         res.status(200).send(output)
+            res.status(200).send(output)
 
-    //     } catch (error) {
-    //         if (error instanceof Error) {
-    //             res.status(500).send(error.message)
-    //         } else {
-    //             res.status(500).send('unexpected error')
-    //         }
-    //     }
-    // }
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send('unexpected error')
+            }
+        }
+    }
 
     public createComment = async (req: Request, res: Response) => {
         try {
@@ -34,7 +34,7 @@ export class CommentController {
                 content: req.body.content as string,
                 rl_user: req.body.rl_user,
                 rl_post: req.body.rl_post,
-                rl_commment: req.body.rl_comment,
+                rl_comment: req.body.rl_comment,
                 token: req.headers.authorization as string
             })
 

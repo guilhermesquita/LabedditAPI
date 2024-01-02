@@ -1,7 +1,7 @@
 import { CommentDatabase } from "../database/comment-database"
 import { PostDatabase } from "../database/post-database"
-import { CreateCommentInputDTO, CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO } from "../dtos"
-import { Comment } from "../entity"
+import { CreateCommentInputDTO, CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO, GetCommentByPostIdInputDTO } from "../dtos"
+import { Comment, CommentDB } from "../entity"
 import { BadRequestError } from "../errors"
 import { IdGenerator, TokenManager } from "../services"
 
@@ -32,7 +32,6 @@ export class CommentBusiness {
         if (payload === null) {
             throw new BadRequestError("token inválido")
         }
-
         if (!rl_comment && !rl_post) {
             throw new BadRequestError("Escolha o comentário ou post vinculado")
         }
@@ -85,5 +84,17 @@ export class CommentBusiness {
         }
 
         return output
+    }
+
+    public getCommentByPostCommentId = async (input: GetCommentByPostIdInputDTO) => {
+
+        const payload = this.tokenManager.getPayload(input.token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const commentDB: CommentDB[] = await this.commentDatabase.getCommentByPostCommentId(input.id)
+        return commentDB
     }
 }

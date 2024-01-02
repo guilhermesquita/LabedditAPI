@@ -20,6 +20,12 @@ export class CommentDatabase extends BaseDatabase {
         .update('comments', total + 1).where({ id: rl_post })
     }
 
+    public getCommentByPostCommentId = async (id_post_comment: string) => {
+        return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT)
+        .select().where({rl_post: id_post_comment})
+        .orWhere({rl_comment: id_post_comment})
+    }
+
     public getPostById = async (id: string | undefined) => {
         return await BaseDatabase.connection('post').select().where({id: id}).first()
     }
