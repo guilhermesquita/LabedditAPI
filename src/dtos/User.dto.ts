@@ -51,3 +51,23 @@ export const GetUserByIdSchema = z.object({
     id: z.string().min(1),
     token: z.string().min(1)
   }).transform(data => data as GetUserByIdInputDTO)
+
+export interface EditUserByIdInputDTO {
+    id: string;
+    name?: string;
+    email?: string;
+    password?: string;
+    token: string;
+}
+
+export interface EditUserByIdOutputDTO {
+    id: string;
+    name: string;
+    email: string;
+}
+
+export const EditUserByIdSchema = z.object({
+    name: z.string().min(2).optional(),
+    email: z.string().email().optional(),
+    password: z.string().min(4).optional()
+  }).transform(data => data as EditUserByIdInputDTO)
