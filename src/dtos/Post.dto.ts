@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+//CREATE
 export interface CreatePostInputDTO{
     content: string
     rl_user: string
@@ -16,3 +17,9 @@ export const CreatePostSchema = z.object({
     rl_user: z.string().min(2),
     token: z.string().min(2)
 })
+
+//GET POST
+export interface GetAllPostInputDTO {
+    q: string | undefined;
+    token: string;
+}

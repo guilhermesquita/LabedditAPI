@@ -20,6 +20,11 @@ export class CommentDatabase extends BaseDatabase {
         .update('comments', total + 1).where({ id: rl_post })
     }
 
+    public setNumberCommentComment = async (rl_comment: string | undefined, total: number) => {
+        return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT)
+        .update('comments', total + 1).where({ id: rl_comment })
+    }
+
     public getCommentByPostCommentId = async (id_post_comment: string) => {
         return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT)
         .select().where({rl_post: id_post_comment})
@@ -28,6 +33,10 @@ export class CommentDatabase extends BaseDatabase {
 
     public getPostById = async (id: string | undefined) => {
         return await BaseDatabase.connection('post').select().where({id: id}).first()
+    }
+
+    public getCommentById = async (id: string | undefined) => {
+        return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().where({id: id})
     }
 
     public async createComment(newComment: CommentDB): Promise<void> {

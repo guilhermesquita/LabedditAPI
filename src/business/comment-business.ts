@@ -1,6 +1,5 @@
 import { CommentDatabase } from "../database/comment-database"
-import { PostDatabase } from "../database/post-database"
-import { CreateCommentInputDTO, CreatePostInputDTO, CreatePostOutputDTO, GetAllPostInputDTO, GetCommentByPostIdInputDTO } from "../dtos"
+import { CreateCommentInputDTO, CreatePostOutputDTO, GetCommentByPostIdInputDTO } from "../dtos"
 import { Comment, CommentDB } from "../entity"
 import { BadRequestError } from "../errors"
 import { IdGenerator, TokenManager } from "../services"
@@ -69,6 +68,11 @@ export class CommentBusiness {
             rl_post,
             rl_comment
         )
+
+        if (rl_comment !== undefined) {
+            const totalCommentPost:CommentDB[] = await this.commentDatabase.getCommentById(rl_comment)
+            await this.commentDatabase.setNumberCommentComment(rl_comment, totalCommentPost[0].comments)
+        }
 
         if (rl_post !== undefined) {
             const totalCommentPost = await this.commentDatabase.getPostById(rl_post)
