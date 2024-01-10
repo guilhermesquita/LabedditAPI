@@ -102,8 +102,6 @@ export class UserBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        console.log(id)
-
         const userDb: UserDB = await this.userDatabase.getUserById(id)
         if (!userDb) {
             throw new NotFoundError('Usuário não encontrado')
