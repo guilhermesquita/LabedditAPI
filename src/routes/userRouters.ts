@@ -19,3 +19,4 @@ const userController = new UserController(
 //Implementação das rotas
 userRouter.get('/:id', userController.getUserById)
 userRouter.post('/', userController.createUser)
+userRouter.put('/:id', userController.editUser)

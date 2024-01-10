@@ -1,5 +1,5 @@
 import { UserDatabase } from "../database/user-database"
-import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO } from "../dtos"
+import { CreateUserInputDTO, CreateUserOutputDTO, EditUserByIdInputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO } from "../dtos"
 import { User, UserDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
 import { IdGenerator, TokenManager, TokenPayload } from "../services"
@@ -84,6 +84,42 @@ export class UserBusiness {
         if (!userDb) {
             throw new NotFoundError('Usuário não encontrado')
         }
+
+        const output: GetUserByIdOutputDTO = {
+            id: userDb.id,
+            name: userDb.name,
+            email: userDb.email
+        }
+        return output
+    }
+
+    public editUserById = async (input: EditUserByIdInputDTO) => {
+        const { id, token } = input
+
+        const payload = this.tokenManager.getPayload(token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        console.log(id)
+
+        const userDb: UserDB = await this.userDatabase.getUserById(id)
+        if (!userDb) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        const updateUser = new User(
+            userDb.id,
+            userDb.name,
+            userDb.email,
+            userDb.password,
+            userDb.created_at
+        )
+        
+        const teste = updateUser.editDBModel(input)
+        await this.userDatabase.editUserById(teste)
+
 
         const output: GetUserByIdOutputDTO = {
             id: userDb.id,

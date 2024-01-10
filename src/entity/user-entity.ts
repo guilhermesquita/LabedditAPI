@@ -1,3 +1,5 @@
+import { EditUserByIdInputDTO } from "../dtos";
+
 export interface UserDB {
     id: string;
     name: string;
@@ -61,6 +63,16 @@ export class User {
             name: this.name,
             email: this.email,
             password: this.password,
+            created_at: this.createdAt
+        }
+    }
+
+    public editDBModel(input: EditUserByIdInputDTO): UserDB{
+        return {
+            id: this.id,
+            name: input.name || this.name,
+            email: input.email || this.email,
+            password: input.password || this.password,
             created_at: this.createdAt
         }
     }
