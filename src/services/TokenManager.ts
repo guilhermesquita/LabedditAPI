@@ -8,6 +8,13 @@ export interface TokenPayload {
     name: string,
 }
 
+export interface TokenDecode{
+    id: string,
+    name: string,
+    iat: number,
+    exp: number
+  }
+
 export class TokenManager {
     public createToken = (payload: TokenPayload): string => {
         const token = jwt.sign(

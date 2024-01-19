@@ -64,8 +64,7 @@ export interface EditUserByIdInputDTO {
 
 export interface EditUserByIdOutputDTO {
     id: string;
-    name: string;
-    email: string;
+    message: string;
 }
 
 export const EditUserByIdSchema = z.object({

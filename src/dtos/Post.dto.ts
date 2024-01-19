@@ -23,3 +23,28 @@ export interface GetAllPostInputDTO {
     q: string | undefined;
     token: string;
 }
+
+//EDIT
+export interface EditPostByIdInputDTO {
+    id: string,
+    content: string,
+    comments: boolean,
+    like: boolean,
+    dislike: boolean,
+    token: string,
+    edited_at?: string
+}
+
+export interface EditPostByIdOutputDTO {
+    id: string;
+    message: string;
+}
+
+export const EditPostByIdSchema = z.object({
+    id: z.string().min(1),
+    content: z.string().min(2).optional(),
+    like: z.boolean().optional(),
+    dislike: z.boolean().optional(),
+    comments: z.boolean().optional(),
+    token: z.string().min(1)
+  }).transform(data => data as EditPostByIdInputDTO)

@@ -1,3 +1,5 @@
+import { EditPostByIdInputDTO } from "../dtos"
+
 export interface PostDB {
     id: string
     content: string
@@ -6,7 +8,7 @@ export interface PostDB {
     dislike: number
     rl_user: string
     created_at: string
-    updated_at?: string
+    edited_at?: string 
 }
 
 export class Post {
@@ -18,7 +20,7 @@ export class Post {
     private dislike: number,
     private rl_user: string,
     private created_at: string,
-    private updated_at: string | null
+    private edited_at?: string 
     ) {}
 
     public getId(): string {
@@ -70,8 +72,8 @@ export class Post {
         return this.created_at
     }
 
-    public getUpdatedAt(): string|null {
-        return this.updated_at
+    public getUpdatedAt(): string | undefined{
+        return this.edited_at
     }
 
     public createDBModel(): PostDB{
@@ -83,6 +85,19 @@ export class Post {
             dislike: this.dislike,
             created_at: this.created_at,
             rl_user: this.rl_user
+        }
+    }
+
+    public editDBModel(input: EditPostByIdInputDTO): PostDB{
+        return {
+            id: this.id,
+            content: input.content || this.content,
+            comments: this.comments,
+            like: this.like,
+            dislike: this.dislike,
+            rl_user: this.rl_user,
+            created_at: this.created_at,
+            edited_at: this.edited_at
         }
     }
 }

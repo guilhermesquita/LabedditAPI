@@ -1,8 +1,9 @@
 import { UserDatabase } from "../database/user-database"
-import { CreateUserInputDTO, CreateUserOutputDTO, EditUserByIdInputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO } from "../dtos"
+import { CreateUserInputDTO, CreateUserOutputDTO, EditUserByIdInputDTO, EditUserByIdOutputDTO, GetUserByIdInputDTO, GetUserByIdOutputDTO, LoginUserInputDTO, LoginUserOutputDTO } from "../dtos"
 import { User, UserDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
-import { IdGenerator, TokenManager, TokenPayload } from "../services"
+import { IdGenerator, TokenDecode, TokenManager, TokenPayload } from "../services"
+import * as jwt from 'jsonwebtoken';
 
 export class UserBusiness {
 
@@ -24,6 +25,7 @@ export class UserBusiness {
         }
 
         const token = this.tokenManager.createToken(tokenPayload)
+        console.log(token)
 
         const output: LoginUserOutputDTO = {
             message: 'Login realizado com sucesso!',
@@ -102,9 +104,15 @@ export class UserBusiness {
             throw new BadRequestError("token inválido")
         }
 
+        const decodedToken = jwt.decode(token) as TokenDecode;
+
         const userDb: UserDB = await this.userDatabase.getUserById(id)
         if (!userDb) {
             throw new NotFoundError('Usuário não encontrado')
+        }
+
+        if(userDb.id !== decodedToken.id){
+            throw new BadRequestError("Usuário não permitido")
         }
 
         const updateUser = new User(
@@ -119,10 +127,9 @@ export class UserBusiness {
         await this.userDatabase.editUserById(teste)
 
 
-        const output: GetUserByIdOutputDTO = {
+        const output: EditUserByIdOutputDTO = {
             id: userDb.id,
-            name: userDb.name,
-            email: userDb.email
+            message: `O usuário ${input.name} foi editado com sucesso`,
         }
         return output
     }

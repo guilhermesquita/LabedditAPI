@@ -30,4 +30,11 @@ export class PostDatabase extends BaseDatabase {
     public async countDislikes(id: string) {
         return await BaseDatabase.connection('rl_like_dislike_post').count().where({rl_post: id, like: 0}).first();
     }
+
+    public editPostById = async (input: PostDB) => {
+        return await BaseDatabase
+        .connection(PostDatabase.TABLE_POST)
+        .update(input)
+        .where({ id: input.id });
+      }
 }

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { PostBusiness } from '../business'
-import { CreatePostSchema } from '../dtos'
+import { CreatePostSchema, EditPostByIdSchema } from '../dtos'
+import { ZodError } from 'zod'
+import { BaseError } from '../errors'
 
 export class PostController {
     constructor(
@@ -44,6 +46,30 @@ export class PostController {
                 res.status(500).send(error.message)
             } else {
                 res.status(500).send('unexpected error')
+            }
+        }
+    }
+    public editPost = async (req: Request, res: Response) => {
+        try {
+            const input = EditPostByIdSchema.parse({
+                id: req.params.id,
+                content: req.body.content,
+                like: req.body.like,
+                dislike: req.body.dislike,
+                token: req.headers.authorization
+            })
+
+            const output = await this.postBusiness.editPostById(input)
+
+            res.status(201).send(output)
+        } catch (error) {
+            console.log(error)
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
             }
         }
     }
