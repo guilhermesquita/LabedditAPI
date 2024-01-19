@@ -28,7 +28,6 @@ export interface GetAllPostInputDTO {
 export interface EditPostByIdInputDTO {
     id: string,
     content: string,
-    comments: boolean,
     like: boolean,
     dislike: boolean,
     token: string,

@@ -3,7 +3,8 @@ import { PostDatabase } from "../database/post-database"
 import { CreatePostInputDTO, CreatePostOutputDTO, EditPostByIdInputDTO, EditPostByIdOutputDTO, GetAllPostInputDTO } from "../dtos"
 import { Post, PostDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
-import { IdGenerator, TokenManager } from "../services"
+import { IdGenerator, TokenDecode, TokenManager } from "../services"
+import * as jwt from 'jsonwebtoken';
 
 export class PostBusiness {
 
@@ -89,31 +90,36 @@ export class PostBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
+        const decodedToken = jwt.decode(token) as TokenDecode;
+        if(postDb.rl_user !== decodedToken.id){
+            throw new BadRequestError("Usuário não permitido")
+        }
+
         if(like && dislike){
             throw new BadRequestError("error")
         }
 
-        if (like) {
-            const idLikeDislike = this.idGenerator.generate()
-            const inputLike = {
-                id: idLikeDislike,
-                rl_user: postDb.rl_user,
-                rl_post: id,
-                like: 1
-            }
-            await this.likeDislikePost.createLikeDislike(inputLike)
-        }
+        // if (like) {
+        //     const idLikeDislike = this.idGenerator.generate()
+        //     const inputLike = {
+        //         id: idLikeDislike,
+        //         rl_user: postDb.rl_user,
+        //         rl_post: id,
+        //         like: 1
+        //     }
+        //     await this.likeDislikePost.createLikeDislike(inputLike)
+        // }
 
-        if (dislike) {
-            const idLikeDislike = this.idGenerator.generate()
-            const inputLike = {
-                id: idLikeDislike,
-                rl_user: postDb.rl_user,
-                rl_post: id,
-                like: 0
-            }
-            await this.likeDislikePost.createLikeDislike(inputLike)
-        }
+        // if (dislike) {
+        //     const idLikeDislike = this.idGenerator.generate()
+        //     const inputLike = {
+        //         id: idLikeDislike,
+        //         rl_user: postDb.rl_user,
+        //         rl_post: id,
+        //         like: 0
+        //     }
+        //     await this.likeDislikePost.createLikeDislike(inputLike)
+        // }
 
 
         const totalComment = await this.postDatabase.countComments(id)
