@@ -64,3 +64,53 @@ public getPayload = (token: string): TokenPayload | null => {
         }
     }
 ```
+
+## Arquitetura
+
+#### 📂Controllers
+> Aplica validações necessárias na requisição.
+#### 📂Business
+> Aplica regras de negócios antes de enviar a controller.
+#### 📂Database
+> Cria as conexões necessárias com o banco de dados.
+#### 📂Services
+> Aplica configurações básicas para token e id.
+#### 📂dtos
+> Desenvolve padrão para o transporte de dados entre diferentes componentes.
+#### 📂Entity
+> Gerencia a estrutura das entidades da aplicação.
+#### 📂Routes
+> Gerencia a estrutura das rotas dos endpoints.
+#### 📂Errors
+> Cria as classes necessárias para disparar erros nas requisições.
+
+#### 📂mocks
+> Armazena os dados e mocks utilizados nos testes unitários.
+#### 📂tests
+> Armazena as switch de testes de integração.
+
+## Endpoints Básicos
+### endpoints
+
+**_POST_** /v2/users
+
+Cadastra um novo usuário
+
+    body {
+        email: 'author@email.com',
+        name: 'Nome do usuário',
+        password: 'Senha do usuário'
+    }
+---
+**_POST_** /v2/posts
+
+Cadastra um novo post
+
+    body {
+        content: 'conteúdo da postagem',
+        rl_user: 'id do usuário'
+    }
+---
+**_GET_** /v2/posts
+
+Listagem de todos os post
