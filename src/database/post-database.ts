@@ -15,6 +15,11 @@ export class PostDatabase extends BaseDatabase {
         return postDB
     }
 
+    public getPostsByUserAndId = async (id: string, rl_user: string) => {
+        const postDB = await BaseDatabase.connection(PostDatabase.TABLE_POST).select().where({id}).andWhere({rl_user}).first()
+        return postDB
+    }
+
     public async createPost(newPost: PostDB): Promise<void> {
         await BaseDatabase.connection(PostDatabase.TABLE_POST).insert(newPost)
     }
@@ -36,5 +41,12 @@ export class PostDatabase extends BaseDatabase {
         .connection(PostDatabase.TABLE_POST)
         .update(input)
         .where({ id: input.id });
-      }
+    }
+
+    public editLikesPostById = async (likes: number, id: string) => {
+        return await BaseDatabase
+        .connection(PostDatabase.TABLE_POST)
+        .update({like: likes + 1})
+        .where({ id });
+    }
 }

@@ -1,7 +1,8 @@
 import { LikeDislikePostDatabase } from "../database/like-dislike-post-database"
 import { PostDatabase } from "../database/post-database"
+import { UserDatabase } from "../database/user-database"
 import { CreatePostInputDTO, CreatePostOutputDTO, EditPostByIdInputDTO, EditPostByIdOutputDTO, GetAllPostInputDTO } from "../dtos"
-import { Post, PostDB } from "../entity"
+import { Post, PostDB, UserDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
 import { IdGenerator, TokenDecode, TokenManager } from "../services"
 import * as jwt from 'jsonwebtoken';
@@ -12,7 +13,7 @@ export class PostBusiness {
         private postDatabase: PostDatabase,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager,
-        private readonly likeDislikePost: LikeDislikePostDatabase
+        private readonly userDatabase: UserDatabase
     ) { }
 
     public getAllPost = async (input: GetAllPostInputDTO) => {
@@ -35,6 +36,16 @@ export class PostBusiness {
             throw new BadRequestError("token inválido")
         }
 
+        const userDB: UserDB = await this.userDatabase.getUserById(rl_user)
+        if (!userDB) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        const decodedToken = jwt.decode(token) as TokenDecode;
+        if(userDB.id !== decodedToken.id){
+            throw new BadRequestError("Usuário não permitido")
+        }
+        
         const id = this.idGenerator.generate()
 
         const totalComment = await this.postDatabase.countComments(id)
@@ -87,7 +98,7 @@ export class PostBusiness {
 
         const postDb: PostDB = await this.postDatabase.getAllPosts(id)
         if (!postDb) {
-            throw new NotFoundError('Usuário não encontrado')
+            throw new NotFoundError('Postagem não encontrado')
         }
 
         const decodedToken = jwt.decode(token) as TokenDecode;
@@ -98,29 +109,6 @@ export class PostBusiness {
         if(like && dislike){
             throw new BadRequestError("error")
         }
-
-        // if (like) {
-        //     const idLikeDislike = this.idGenerator.generate()
-        //     const inputLike = {
-        //         id: idLikeDislike,
-        //         rl_user: postDb.rl_user,
-        //         rl_post: id,
-        //         like: 1
-        //     }
-        //     await this.likeDislikePost.createLikeDislike(inputLike)
-        // }
-
-        // if (dislike) {
-        //     const idLikeDislike = this.idGenerator.generate()
-        //     const inputLike = {
-        //         id: idLikeDislike,
-        //         rl_user: postDb.rl_user,
-        //         rl_post: id,
-        //         like: 0
-        //     }
-        //     await this.likeDislikePost.createLikeDislike(inputLike)
-        // }
-
 
         const totalComment = await this.postDatabase.countComments(id)
         const totalLike = await this.postDatabase.countLikes(id)
