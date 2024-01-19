@@ -89,6 +89,9 @@ export class PostBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
+        if(like && dislike){
+            throw new BadRequestError("error")
+        }
 
         if (like) {
             const idLikeDislike = this.idGenerator.generate()
@@ -112,9 +115,6 @@ export class PostBusiness {
             await this.likeDislikePost.createLikeDislike(inputLike)
         }
 
-        if(like && dislike){
-            throw new BadRequestError("error")
-        }
 
         const totalComment = await this.postDatabase.countComments(id)
         const totalLike = await this.postDatabase.countLikes(id)
