@@ -99,7 +99,7 @@ export class CommentBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const commentDB: CommentDB[] = await this.commentDatabase.getCommentByPostCommentId(input.id)
+        const commentDB: CommentDB[] = await this.commentDatabase.getCommentByPostCommentId(input.id_post)
         return commentDB
     }
 

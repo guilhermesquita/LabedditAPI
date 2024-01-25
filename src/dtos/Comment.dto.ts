@@ -24,7 +24,7 @@ export const CreateCommentSchema = z.object({
 
 //GET COMMENTS
 export interface GetCommentByPostIdInputDTO {
-    id: string;
+    id_post: string;
     token: string;
 }
 
@@ -41,7 +41,7 @@ export interface GetCommentByPostIdOutputDTO {
 }
 
 export const GetCommentByPostIdSchema = z.object({
-    id: z.string().min(1),
+    id_post: z.string().min(1),
     token: z.string().min(1)
 }).transform(data => data as GetCommentByPostIdInputDTO)
 

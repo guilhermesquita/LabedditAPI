@@ -13,7 +13,7 @@ export class CommentController {
     public getCommentByPostCommentId = async (req: Request, res: Response) => {
         try {
             const input = {
-                id: req.params.id as string,
+                id_post: req.params.id_post as string,
                 token: req.headers.authorization as string
             }
 
