@@ -61,4 +61,16 @@ export class CommentDatabase extends BaseDatabase {
         .update(input)
         .where({ id: input.id });
     }
+
+    public getCommentByUserAndId = async (id: string, rl_user: string) => {
+        const postDB = await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().where({id}).andWhere({rl_user}).first()
+        return postDB
+    }
+
+    public editLikesCommentById = async (likes: number, id: string) => {
+        return await BaseDatabase
+        .connection(CommentDatabase.TABLE_COMMENT)
+        .update({like: likes + 1})
+        .where({ id });
+    }
 }
