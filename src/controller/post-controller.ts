@@ -54,8 +54,6 @@ export class PostController {
             const input = EditPostByIdSchema.parse({
                 id: req.params.id,
                 content: req.body.content,
-                like: req.body.like,
-                dislike: req.body.dislike,
                 token: req.headers.authorization
             })
 
@@ -63,7 +61,6 @@ export class PostController {
 
             res.status(201).send(output)
         } catch (error) {
-            console.log(error)
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
             } else if (error instanceof BaseError) {

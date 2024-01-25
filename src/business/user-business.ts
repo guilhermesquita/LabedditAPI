@@ -25,7 +25,6 @@ export class UserBusiness {
         }
 
         const token = this.tokenManager.createToken(tokenPayload)
-        console.log(token)
 
         const output: LoginUserOutputDTO = {
             message: 'Login realizado com sucesso!',

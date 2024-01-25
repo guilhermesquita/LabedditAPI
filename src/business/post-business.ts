@@ -87,8 +87,9 @@ export class PostBusiness {
 
         return output
     }
+    
     public editPostById = async (input: EditPostByIdInputDTO) => {
-        const { id, token, like, dislike } = input
+        const { id, token, content } = input
 
         const payload = this.tokenManager.getPayload(token)
 
@@ -104,10 +105,6 @@ export class PostBusiness {
         const decodedToken = jwt.decode(token) as TokenDecode;
         if(postDb.rl_user !== decodedToken.id){
             throw new BadRequestError("Usuário não permitido")
-        }
-
-        if(like && dislike){
-            throw new BadRequestError("error")
         }
 
         const totalComment = await this.postDatabase.countComments(id)
@@ -131,7 +128,7 @@ export class PostBusiness {
 
         const updatePost = new Post(
             postDb.id,
-            postDb.content,
+            content,
             comments as number,
             likes as number,
             dislikes as number,

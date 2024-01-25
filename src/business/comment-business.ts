@@ -101,4 +101,68 @@ export class CommentBusiness {
         const commentDB: CommentDB[] = await this.commentDatabase.getCommentByPostCommentId(input.id)
         return commentDB
     }
+
+    // public editPostById = async (input: EditPostByIdInputDTO) => {
+    //     const { id, token, like, dislike } = input
+
+    //     const payload = this.tokenManager.getPayload(token)
+
+    //     if (payload === null) {
+    //         throw new BadRequestError("token inválido")
+    //     }
+
+    //     const postDb: PostDB = await this.postDatabase.getAllPosts(id)
+    //     if (!postDb) {
+    //         throw new NotFoundError('Postagem não encontrado')
+    //     }
+
+    //     const decodedToken = jwt.decode(token) as TokenDecode;
+    //     if(postDb.rl_user !== decodedToken.id){
+    //         throw new BadRequestError("Usuário não permitido")
+    //     }
+
+    //     if(like && dislike){
+    //         throw new BadRequestError("error")
+    //     }
+
+    //     const totalComment = await this.postDatabase.countComments(id)
+    //     const totalLike = await this.postDatabase.countLikes(id)
+    //     const totalDislike = await this.postDatabase.countDislikes(id)
+
+    //     let comments
+    //     if (totalComment) {
+    //         comments = totalComment['count(*)'];
+    //     }
+
+    //     let likes
+    //     if (totalLike) {
+    //         likes = totalLike['count(*)'];
+    //     }
+
+    //     let dislikes
+    //     if (totalDislike) {
+    //         dislikes = totalDislike['count(*)'];
+    //     }
+
+    //     const updatePost = new Post(
+    //         postDb.id,
+    //         postDb.content,
+    //         comments as number,
+    //         likes as number,
+    //         dislikes as number,
+    //         postDb.rl_user,
+    //         postDb.created_at,
+    //         new Date().toISOString()
+    //     )
+
+    //     const postDBModel = updatePost.editDBModel(input)
+    //     await this.postDatabase.editPostById(postDBModel)
+
+
+    //     const output: EditPostByIdOutputDTO = {
+    //         id: postDb.id,
+    //         message: `A sua postagem foi editada com sucesso`,
+    //     }
+    //     return output
+    // }
 }
