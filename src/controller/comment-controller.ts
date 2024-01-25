@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
 import { PostBusiness } from '../business'
-import { CreateCommentSchema, CreatePostSchema } from '../dtos'
+import { CreateCommentSchema, CreatePostSchema, EditCommentByIdSchema } from '../dtos'
 import { CommentBusiness } from '../business/comment-business'
+import { ZodError } from 'zod'
+import { BaseError } from '../errors'
 
 export class CommentController {
     constructor(
@@ -47,6 +49,28 @@ export class CommentController {
                 res.status(500).send(error.message)
             } else {
                 res.status(500).send('unexpected error')
+            }
+        }
+    }
+
+    public editPost = async (req: Request, res: Response) => {
+        try {
+            const input = EditCommentByIdSchema.parse({
+                id: req.params.id,
+                content: req.body.content,
+                token: req.headers.authorization
+            })
+
+            const output = await this.commentBusiness.editCommentById(input)
+
+            res.status(201).send(output)
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
             }
         }
     }

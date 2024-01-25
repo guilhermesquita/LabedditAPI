@@ -20,3 +20,4 @@ const commentController = new CommentController(
 //Implementação das rotas
 commentRouter.get('/:id', commentController.getCommentByPostCommentId)
 commentRouter.post('/', commentController.createComment)
+commentRouter.put('/:id', commentController.editPost)

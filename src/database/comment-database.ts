@@ -36,7 +36,7 @@ export class CommentDatabase extends BaseDatabase {
     }
 
     public getCommentById = async (id: string | undefined) => {
-        return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().where({id: id})
+        return await BaseDatabase.connection(CommentDatabase.TABLE_COMMENT).select().where({id: id}).first()
     }
 
     public async createComment(newComment: CommentDB): Promise<void> {
@@ -53,5 +53,12 @@ export class CommentDatabase extends BaseDatabase {
 
     public async countDislikes(id: string) {
         return await BaseDatabase.connection('rl_like_dislike_post').count().where({ rl_post: id, like: 0 }).first();
+    }
+
+    public editPostById = async (input: CommentDB) => {
+        return await BaseDatabase
+        .connection(CommentDatabase.TABLE_COMMENT)
+        .update(input)
+        .where({ id: input.id });
     }
 }

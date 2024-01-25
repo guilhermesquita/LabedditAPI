@@ -1,8 +1,9 @@
 import { CommentDatabase } from "../database/comment-database"
-import { CreateCommentInputDTO, CreatePostOutputDTO, GetCommentByPostIdInputDTO } from "../dtos"
+import { CreateCommentInputDTO, CreatePostOutputDTO, EditCommentByIdInputDTO, EditCommentByIdOutputDTO, GetCommentByPostIdInputDTO } from "../dtos"
 import { Comment, CommentDB } from "../entity"
-import { BadRequestError } from "../errors"
-import { IdGenerator, TokenManager } from "../services"
+import { BadRequestError, NotFoundError } from "../errors"
+import { IdGenerator, TokenDecode, TokenManager } from "../services"
+import * as jwt from 'jsonwebtoken';
 
 export class CommentBusiness {
 
@@ -102,67 +103,67 @@ export class CommentBusiness {
         return commentDB
     }
 
-    // public editPostById = async (input: EditPostByIdInputDTO) => {
-    //     const { id, token, like, dislike } = input
+    public editCommentById = async (input: EditCommentByIdInputDTO) => {
+        const { id, token, like, dislike } = input
 
-    //     const payload = this.tokenManager.getPayload(token)
+        const payload = this.tokenManager.getPayload(token)
 
-    //     if (payload === null) {
-    //         throw new BadRequestError("token inválido")
-    //     }
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
 
-    //     const postDb: PostDB = await this.postDatabase.getAllPosts(id)
-    //     if (!postDb) {
-    //         throw new NotFoundError('Postagem não encontrado')
-    //     }
+        const commentDb: CommentDB = await this.commentDatabase.getCommentById(id)
+        if (!commentDb) {
+            throw new NotFoundError('Postagem não encontrado')
+        }
 
-    //     const decodedToken = jwt.decode(token) as TokenDecode;
-    //     if(postDb.rl_user !== decodedToken.id){
-    //         throw new BadRequestError("Usuário não permitido")
-    //     }
+        const decodedToken = jwt.decode(token) as TokenDecode;
+        if(commentDb.rl_user !== decodedToken.id){
+            throw new BadRequestError("Usuário não permitido")
+        }
 
-    //     if(like && dislike){
-    //         throw new BadRequestError("error")
-    //     }
+        if(like && dislike){
+            throw new BadRequestError("error")
+        }
 
-    //     const totalComment = await this.postDatabase.countComments(id)
-    //     const totalLike = await this.postDatabase.countLikes(id)
-    //     const totalDislike = await this.postDatabase.countDislikes(id)
+        const totalComment = await this.commentDatabase.countComments(id)
+        const totalLike = await this.commentDatabase.countLikes(id)
+        const totalDislike = await this.commentDatabase.countDislikes(id)
 
-    //     let comments
-    //     if (totalComment) {
-    //         comments = totalComment['count(*)'];
-    //     }
+        let comments
+        if (totalComment) {
+            comments = totalComment['count(*)'];
+        }
 
-    //     let likes
-    //     if (totalLike) {
-    //         likes = totalLike['count(*)'];
-    //     }
+        let likes
+        if (totalLike) {
+            likes = totalLike['count(*)'];
+        }
 
-    //     let dislikes
-    //     if (totalDislike) {
-    //         dislikes = totalDislike['count(*)'];
-    //     }
+        let dislikes
+        if (totalDislike) {
+            dislikes = totalDislike['count(*)'];
+        }
 
-    //     const updatePost = new Post(
-    //         postDb.id,
-    //         postDb.content,
-    //         comments as number,
-    //         likes as number,
-    //         dislikes as number,
-    //         postDb.rl_user,
-    //         postDb.created_at,
-    //         new Date().toISOString()
-    //     )
+        const updateComment = new Comment(
+            commentDb.id,
+            commentDb.content,
+            comments as number,
+            likes as number,
+            dislikes as number,
+            commentDb.rl_user,
+            commentDb.created_at,
+            new Date().toISOString()
+        )
 
-    //     const postDBModel = updatePost.editDBModel(input)
-    //     await this.postDatabase.editPostById(postDBModel)
+        const postDBModel = updateComment.editDBModel(input)
+        await this.commentDatabase.editPostById(postDBModel)
 
 
-    //     const output: EditPostByIdOutputDTO = {
-    //         id: postDb.id,
-    //         message: `A sua postagem foi editada com sucesso`,
-    //     }
-    //     return output
-    // }
+        const output: EditCommentByIdOutputDTO = {
+            id: commentDb.id,
+            message: `O seu comentário foi editado com sucesso`,
+        }
+        return output
+    }
 }

@@ -1,3 +1,5 @@
+import { EditCommentByIdInputDTO } from "../dtos"
+
 export interface CommentDB {
     id: string
     content: string
@@ -8,7 +10,7 @@ export interface CommentDB {
     rl_post?: string
     rl_comment?: string
     created_at: string
-    updated_at?: string | null
+    edited_at?: string | null
 }
 
 export class Comment {
@@ -20,7 +22,7 @@ export class Comment {
         private dislike: number,
         private rl_user: string,
         private created_at: string,
-        private updated_at: string | null,
+        private edited_at: string | null,
         private rl_post?: string,
         private rl_comment?: string
     ) { }
@@ -81,8 +83,8 @@ export class Comment {
         return this.created_at
     }
 
-    public getUpdatedAt(): string | null {
-        return this.updated_at
+    public getEditedAt(): string | null {
+        return this.edited_at
     }
 
     public createDBModel(): CommentDB {
@@ -96,6 +98,21 @@ export class Comment {
             rl_comment: this.rl_comment,
             created_at: this.created_at,
             rl_user: this.rl_user
+        }
+    }
+
+    public editDBModel(input: EditCommentByIdInputDTO): CommentDB{
+        return {
+            id: this.id,
+            content: input.content || this.content,
+            comments: this.comments,
+            like: this.like,
+            dislike: this.dislike,
+            rl_user: this.rl_user,
+            rl_comment: this.rl_comment,
+            rl_post: this.rl_post,
+            created_at: this.created_at,
+            edited_at: this.edited_at
         }
     }
 }
