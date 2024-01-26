@@ -80,4 +80,18 @@ export class CommentDatabase extends BaseDatabase {
         .update({dislike: dislikes + 1})
         .where({ id });
     }
+
+    public removeLikesComment = async (likes: number, id: string) => {
+        return await BaseDatabase
+        .connection(CommentDatabase.TABLE_COMMENT)
+        .update({like: likes - 1})
+        .where({ id });
+    }
+
+    public removeDislikesComment = async (dislikes: number, id: string) => {
+        return await BaseDatabase
+        .connection(CommentDatabase.TABLE_COMMENT)
+        .update({dislike: dislikes - 1})
+        .where({ id });
+    }
 }

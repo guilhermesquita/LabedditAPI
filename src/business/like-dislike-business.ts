@@ -88,7 +88,7 @@ export class LikeDislikeBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        await this.postDatabase.editDislikesPostById(postDb.like, rl_post)
+        await this.postDatabase.editDislikesPostById(postDb.dislike, rl_post)
 
         const id = this.idGenerator.generate()
 
@@ -174,7 +174,7 @@ export class LikeDislikeBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        await this.commentDatabase.editDislikesCommentById(commentDB.like, rl_comment)
+        await this.commentDatabase.editDislikesCommentById(commentDB.dislike, rl_comment)
 
         const id = this.idGenerator.generate()
 
@@ -189,6 +189,82 @@ export class LikeDislikeBusiness {
         const output: CreateLikeDislikeCommentOutputDTO = {
             id_post: rl_comment,
             message: `A dislike efetuado com sucesso`,
+        }
+        return output
+    }
+
+    public removeLikeComment = async (input: CreateLikeDislikeCommentInputDTO) => {
+        const { rl_comment, rl_user, token } = input
+
+        const payload = this.tokenManager.getPayload(token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const decodedToken = jwt.decode(token) as TokenDecode;
+        if (rl_user === decodedToken.id) {
+            throw new BadRequestError("Ação não permitida ao usuário. Você não pode descurtir o próprio post")
+        }
+
+        const commentDB: CommentDB = await this.commentDatabase.getCommentById(rl_comment)
+        if (!commentDB) {
+            throw new NotFoundError('Comentário não encontrado')
+        }
+
+        if(commentDB.like === 0){
+            throw new BadRequestError('Comentário não possui like')
+        }
+
+        const userDB: UserDB = await this.userDatabase.getUserById(rl_user)
+        if (!userDB) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        await this.commentDatabase.removeLikesComment(commentDB.like, rl_comment)
+        await this.likeDislikeCommentDatabase.removeLikeDislikeByRlCommentAndRlUser(rl_comment, rl_user)
+
+        const output: CreateLikeDislikeCommentOutputDTO = {
+            id_post: rl_comment,
+            message: `Curtida removida com sucesso`,
+        }
+        return output
+    }
+
+    public removeDislikeComment = async (input: CreateLikeDislikeCommentInputDTO) => {
+        const { rl_comment, rl_user, token } = input
+
+        const payload = this.tokenManager.getPayload(token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const decodedToken = jwt.decode(token) as TokenDecode;
+        if (rl_user === decodedToken.id) {
+            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        }
+
+        const commentDB: CommentDB = await this.commentDatabase.getCommentById(rl_comment)
+        if (!commentDB) {
+            throw new NotFoundError('Comentário não encontrado')
+        }
+
+        const userDB: UserDB = await this.userDatabase.getUserById(rl_user)
+        if (!userDB) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        if(commentDB.dislike === 0){
+            throw new BadRequestError('Comentário não possui dislike')
+        }
+
+        await this.commentDatabase.removeDislikesComment(commentDB.dislike, rl_comment)
+        await this.likeDislikeCommentDatabase.removeLikeDislikeByRlCommentAndRlUser(rl_comment, rl_user)
+        
+        const output: CreateLikeDislikeCommentOutputDTO = {
+            id_post: rl_comment,
+            message: `A dislike removido com sucesso`,
         }
         return output
     }
