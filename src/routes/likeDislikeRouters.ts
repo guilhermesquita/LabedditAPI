@@ -28,3 +28,4 @@ const likeDislikeController = new LikeDislikeController(
 likeDislikeRouter.post('/like/posts', likeDislikeController.CreateLikePost)
 likeDislikeRouter.post('/dislike/posts', likeDislikeController.CreateDislikePost)
 likeDislikeRouter.post('/like/comments', likeDislikeController.CreateLikeComment)
+likeDislikeRouter.post('/dislike/comments', likeDislikeController.CreateDislikeComment)

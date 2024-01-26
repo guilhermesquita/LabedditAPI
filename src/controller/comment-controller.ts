@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
-import { PostBusiness } from '../business'
-import { CreateCommentSchema, CreatePostSchema, EditCommentByIdSchema } from '../dtos'
+import { CreateCommentSchema, EditCommentByIdSchema } from '../dtos'
 import { CommentBusiness } from '../business/comment-business'
 import { ZodError } from 'zod'
 import { BaseError } from '../errors'

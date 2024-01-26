@@ -45,10 +45,6 @@ export class LikeDislikeBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        const postDatabase = await this.postDatabase.getPostsByUserAndId(rl_post, rl_user)
-        if(!postDatabase){
-            throw new NotFoundError('Postagem não encontrada')
-        }
         await this.postDatabase.editLikesPostById(postDb.like, rl_post)
 
         const id = this.idGenerator.generate()
@@ -92,10 +88,6 @@ export class LikeDislikeBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        const postDatabase = await this.postDatabase.getPostsByUserAndId(rl_post, rl_user)
-        if(!postDatabase){
-            throw new NotFoundError('Postagem não encontrada')
-        }
         await this.postDatabase.editDislikesPostById(postDb.like, rl_post)
 
         const id = this.idGenerator.generate()
@@ -139,10 +131,6 @@ export class LikeDislikeBusiness {
             throw new NotFoundError('Usuário não encontrado')
         }
 
-        const postDatabase = await this.commentDatabase.getCommentByUserAndId(rl_comment, rl_user)
-        if(!postDatabase){
-            throw new NotFoundError('Postagem não encontrada')
-        }
         await this.commentDatabase.editLikesCommentById(commentDB.like, rl_comment)
 
         const id = this.idGenerator.generate()
@@ -158,6 +146,49 @@ export class LikeDislikeBusiness {
         const output: CreateLikeDislikeCommentOutputDTO = {
             id_post: rl_comment,
             message: `A postagem curtida com sucesso`,
+        }
+        return output
+    }
+
+    public createDislikeComment = async (input: CreateLikeDislikeCommentInputDTO) => {
+        const { rl_comment, rl_user, token } = input
+
+        const payload = this.tokenManager.getPayload(token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const decodedToken = jwt.decode(token) as TokenDecode;
+        if (rl_user === decodedToken.id) {
+            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        }
+
+        const commentDB: CommentDB = await this.commentDatabase.getCommentById(rl_comment)
+        if (!commentDB) {
+            throw new NotFoundError('Comentário não encontrado')
+        }
+
+        const userDB: UserDB = await this.userDatabase.getUserById(rl_user)
+        if (!userDB) {
+            throw new NotFoundError('Usuário não encontrado')
+        }
+
+        await this.commentDatabase.editDislikesCommentById(commentDB.like, rl_comment)
+
+        const id = this.idGenerator.generate()
+
+        const inputLike = {
+            id,
+            rl_user,
+            rl_comment,
+            like: 0
+        }
+        await this.likeDislikeCommentDatabase.createLikeDislike(inputLike)
+        
+        const output: CreateLikeDislikeCommentOutputDTO = {
+            id_post: rl_comment,
+            message: `A dislike efetuado com sucesso`,
         }
         return output
     }
