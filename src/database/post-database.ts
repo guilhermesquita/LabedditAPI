@@ -56,4 +56,18 @@ export class PostDatabase extends BaseDatabase {
         .update({dislike: dislikes + 1})
         .where({ id });
     }
+
+    public removeLikesPost = async (likes: number, id: string) => {
+        return await BaseDatabase
+        .connection(PostDatabase.TABLE_POST)
+        .update({like: likes - 1})
+        .where({ id });
+    }
+
+    public removeDislikesPost = async (dislikes: number, id: string) => {
+        return await BaseDatabase
+        .connection(PostDatabase.TABLE_POST)
+        .update({dislike: dislikes - 1})
+        .where({ id });
+    }
 }

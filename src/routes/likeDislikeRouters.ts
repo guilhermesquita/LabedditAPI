@@ -24,9 +24,12 @@ const likeDislikeController = new LikeDislikeController(
     likeDislikeBusiness
 );
 
-
+//POSTS
 likeDislikeRouter.post('/like/posts', likeDislikeController.CreateLikePost)
 likeDislikeRouter.post('/dislike/posts', likeDislikeController.CreateDislikePost)
+likeDislikeRouter.delete('/like/posts', likeDislikeController.RemoveLikePost)
+likeDislikeRouter.delete('/dislike/posts', likeDislikeController.RemoveDislikePost)
+//COMMENTS
 likeDislikeRouter.post('/like/comments', likeDislikeController.CreateLikeComment)
 likeDislikeRouter.post('/dislike/comments', likeDislikeController.CreateDislikeComment)
 likeDislikeRouter.delete('/like/comments', likeDislikeController.RemoveLikeComment)
