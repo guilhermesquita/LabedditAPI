@@ -6,7 +6,7 @@ import { IdGenerator, TokenManager } from '../services';
 
 export const userRouter = express.Router();
 
-//Injenção de dependecias
+//Injenção de dependências
 const userBusiness = new UserBusiness(
     new UserDatabase(),
     new IdGenerator(),

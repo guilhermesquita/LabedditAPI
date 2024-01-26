@@ -29,7 +29,6 @@ export class TokenManager {
     }
 
     public getPayload = (token: string): TokenPayload | null => {
-        // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0Mjg5ZDM2LTAzYmEtNDQyYS04OGFjLWIwMmM3M2FlNzg2MyIsIm5hbWUiOiJndWlybWVzX2dhbWVwbGF5cyIsImlhdCI6MTcwMjc1NDU3NywiZXhwIjoxNzAzMzU5Mzc3fQ.2-Unqgji8vdD-NHLM-1HN9mUkAAKAr9Wqq99eGGaDVY'
         try {
             const payload = jwt.verify(
                 token,

@@ -78,7 +78,6 @@ export class LikeDislikeController {
             const result = await this.likeDislikeBusiness.removeDislikePost(input)
             res.status(201).send(result)
         } catch (error) {
-            console.log(error)
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
             } else if (error instanceof BaseError) {
@@ -159,7 +158,6 @@ export class LikeDislikeController {
             const result = await this.likeDislikeBusiness.removeDislikeComment(input)
             res.status(201).send(result)
         } catch (error) {
-            console.log(error)
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
             } else if (error instanceof BaseError) {

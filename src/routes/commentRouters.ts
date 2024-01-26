@@ -1,13 +1,12 @@
 import express from 'express'
-import { CommentController, PostController } from '../controller';
+import { CommentController } from '../controller';
 import { CommentBusiness} from '../business';
-import { PostDatabase } from '../database/post-database';
 import { IdGenerator, TokenManager } from '../services';
 import { CommentDatabase } from '../database/comment-database';
 
 export const commentRouter = express.Router();
 
-//Injenção de dependecias
+//Injenção de dependências
 const commentBusiness = new CommentBusiness(
     new CommentDatabase(),
     new IdGenerator(),

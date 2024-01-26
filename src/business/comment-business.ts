@@ -13,18 +13,6 @@ export class CommentBusiness {
         private tokenManager: TokenManager
     ) { }
 
-    // public getAllPost = async (input: GetAllPostInputDTO) => {
-
-    //     const payload = this.tokenManager.getPayload(input.token)
-
-    //     if (payload === null) {
-    //         throw new BadRequestError("token inválido")
-    //     }
-
-    //     const postDb: PostDB[] = await this.commentDatabase.getAllComments(input.q)
-    //     return postDb
-    // }
-
     public createComment = async (input: CreateCommentInputDTO) => {
         const { content, rl_user, rl_comment, rl_post, token } = input
 

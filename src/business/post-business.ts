@@ -1,4 +1,3 @@
-import { LikeDislikePostDatabase } from "../database/like-dislike-post-database"
 import { PostDatabase } from "../database/post-database"
 import { UserDatabase } from "../database/user-database"
 import { CreatePostInputDTO, CreatePostOutputDTO, EditPostByIdInputDTO, EditPostByIdOutputDTO, GetAllPostInputDTO } from "../dtos"

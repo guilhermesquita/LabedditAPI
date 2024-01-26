@@ -8,7 +8,7 @@ import { UserDatabase } from '../database/user-database';
 
 export const postRouter = express.Router();
 
-//Injenção de dependecias
+//Injenção de dependências
 const postBusiness = new PostBusiness(
     new PostDatabase(),
     new IdGenerator(),
