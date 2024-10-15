@@ -11,6 +11,8 @@ export class PostDatabase extends BaseDatabase {
           "post.id",
           "post.content",
           "post.comments",
+          "post.like",
+          "post.dislike",
           "post.rl_user",
           "post.created_at",
           "post.edited_at",
@@ -26,6 +28,8 @@ export class PostDatabase extends BaseDatabase {
         "post.id",
         "post.content",
         "post.comments",
+        "post.like",
+        "post.dislike",
         "post.rl_user",
         "post.created_at",
         "post.edited_at",
@@ -33,7 +37,7 @@ export class PostDatabase extends BaseDatabase {
       )
       .join("user", "post.rl_user", "user.id")
       .orderBy("post.created_at", "asc");
-      
+
     return postDB;
   };
 
