@@ -24,6 +24,7 @@ export class UserController {
             if (error instanceof BaseError) {
                 res.status(error.statusCode).send(error.message)
             } else {
+                console.log(error)
                 res.status(500).send('unexpected error')
             }
         }
