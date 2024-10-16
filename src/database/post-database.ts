@@ -18,7 +18,7 @@ export class PostDatabase extends BaseDatabase {
           "post.edited_at",
           "user.name"
         )
-        .where({ id: q })
+        .where({ 'post.id': q })
         .join("user", "post.rl_user", "user.id")
         .first();
     }
