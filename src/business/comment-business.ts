@@ -1,5 +1,5 @@
 import { CommentDatabase } from "../database/comment-database"
-import { CreateCommentInputDTO, CreatePostOutputDTO, EditCommentByIdInputDTO, EditCommentByIdOutputDTO, GetCommentByPostIdInputDTO } from "../dtos"
+import { CreateCommentInputDTO, CreatePostOutputDTO, EditCommentByIdInputDTO, EditCommentByIdOutputDTO, GetAllCommentDTO, GetCommentByPostIdInputDTO } from "../dtos"
 import { Comment, CommentDB } from "../entity"
 import { BadRequestError, NotFoundError } from "../errors"
 import { IdGenerator, TokenDecode, TokenManager } from "../services"
@@ -89,6 +89,17 @@ export class CommentBusiness {
 
         const commentDB: CommentDB[] = await this.commentDatabase.getCommentByPostCommentId(input.id_post)
         return commentDB
+    }
+
+    public getCommentsAll = async (input: GetAllCommentDTO) => {
+        const payload = this.tokenManager.getPayload(input.token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const postDb: CommentDB[] = await this.commentDatabase.getAllComments(input.q)
+        return postDb
     }
 
     public editCommentById = async (input: EditCommentByIdInputDTO) => {

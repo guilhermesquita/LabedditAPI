@@ -23,6 +23,11 @@ export const CreateCommentSchema = z.object({
 })
 
 //GET COMMENTS
+export interface GetAllCommentDTO {
+    q: string | undefined;
+    token: string;
+}
+
 export interface GetCommentByPostIdInputDTO {
     id_post: string;
     token: string;
