@@ -36,7 +36,7 @@ export class PostDatabase extends BaseDatabase {
         "user.name"
       )
       .join("user", "post.rl_user", "user.id")
-      .orderBy("post.created_at", "asc");
+      .orderBy("post.created_at", "desc");
 
     return postDB;
   };
