@@ -30,10 +30,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        // }
 
         const postDb: PostDB = await this.postDatabase.getAllPosts(rl_post)
         if (!postDb) {
@@ -73,10 +73,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        // }
 
         const postDb: PostDB = await this.postDatabase.getAllPosts(rl_post)
         if (!postDb) {
@@ -116,10 +116,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode descurtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode descurtir o próprio post")
+        // }
 
         const postDB: PostDB = await this.postDatabase.getAllPosts(rl_post)
         if (!postDB) {
@@ -154,10 +154,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        // }
 
         const postDB: PostDB = await this.postDatabase.getAllPosts(rl_post)
         if (!postDB) {
@@ -192,10 +192,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        // }
 
         const commentDB: CommentDB = await this.commentDatabase.getCommentById(rl_comment)
         if (!commentDB) {
@@ -235,10 +235,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        // }
 
         const commentDB: CommentDB = await this.commentDatabase.getCommentById(rl_comment)
         if (!commentDB) {
@@ -316,10 +316,10 @@ export class LikeDislikeBusiness {
             throw new BadRequestError("token inválido")
         }
 
-        const decodedToken = jwt.decode(token) as TokenDecode;
-        if (rl_user === decodedToken.id) {
-            throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
-        }
+        // const decodedToken = jwt.decode(token) as TokenDecode;
+        // if (rl_user === decodedToken.id) {
+        //     throw new BadRequestError("Ação não permitida ao usuário. Você não pode curtir o próprio post")
+        // }
 
         const commentDB: CommentDB = await this.commentDatabase.getCommentById(rl_comment)
         if (!commentDB) {
