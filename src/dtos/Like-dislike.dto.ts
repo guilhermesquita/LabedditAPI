@@ -28,6 +28,18 @@ export interface CreateLikeDislikeCommentOutputDTO{
     message: string
 }
 
+export interface listLikeDislikeCommentsByRlPostAndRlUserInputDTO{
+    id_post: string 
+    id_user: string
+    token: string
+}
+
+export interface listLikeDislikeCommentsByRlCommentAndRlUserInputDTO{
+    id_comment: string 
+    id_user: string
+    token: string
+}
+
 export const createLikeDislikeCommentSchema = z.object({
     rl_user: z.string().min(1),
     rl_comment: z.string().min(1),

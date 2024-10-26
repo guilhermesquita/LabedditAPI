@@ -29,6 +29,8 @@ likeDislikeRouter.post('/like/posts', likeDislikeController.CreateLikePost)
 likeDislikeRouter.post('/dislike/posts', likeDislikeController.CreateDislikePost)
 likeDislikeRouter.delete('/like/posts', likeDislikeController.RemoveLikePost)
 likeDislikeRouter.delete('/dislike/posts', likeDislikeController.RemoveDislikePost)
+likeDislikeRouter.get('/like/dislike/post/:id_post/:id_user', likeDislikeController.listLikeDislikePostByRlPostAndRlUser)
+likeDislikeRouter.get('/like/dislike/comment/:id_comment/:id_user', likeDislikeController.listLikeDislikeCommentsByRlCommentAndRlUser)
 //COMMENTS
 likeDislikeRouter.post('/like/comments', likeDislikeController.CreateLikeComment)
 likeDislikeRouter.post('/dislike/comments', likeDislikeController.CreateDislikeComment)
