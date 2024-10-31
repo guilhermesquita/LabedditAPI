@@ -26,7 +26,7 @@ export class CommentBusiness {
 
         const id = this.idGenerator.generate()
 
-        const totalComment = await this.commentDatabase.countComments(id)
+        const totalComment = rl_post !== undefined ? await this.commentDatabase.countComments(id) : await this.commentDatabase.countCommentsByComment(id)
         const totalLike = await this.commentDatabase.countLikes(id)
         const totalDislike = await this.commentDatabase.countDislikes(id)
 
@@ -54,13 +54,13 @@ export class CommentBusiness {
             rl_user,
             new Date().toISOString(),
             null,
-            rl_post,
-            rl_comment
+            rl_post ?? undefined,
+            rl_comment ?? undefined
         )
 
         if (rl_comment !== undefined) {
-            const totalCommentPost:CommentDB[] = await this.commentDatabase.getCommentById(rl_comment)
-            await this.commentDatabase.setNumberCommentComment(rl_comment, totalCommentPost[0].comments)
+            const totalCommentPost:CommentDB = await this.commentDatabase.getCommentById(rl_comment)
+            await this.commentDatabase.setNumberCommentComment(rl_comment, totalCommentPost.comments)
         }
 
         if (rl_post !== undefined) {

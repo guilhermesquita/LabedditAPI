@@ -105,6 +105,13 @@ export class CommentDatabase extends BaseDatabase {
       .first();
   }
 
+  public async countCommentsByComment(id: string) {
+    return await BaseDatabase.connection("comment")
+      .count()
+      .where({ rl_comment: id })
+      .first();
+  }
+
   public async countLikes(id: string) {
     return await BaseDatabase.connection("rl_like_dislike_post")
       .count()
