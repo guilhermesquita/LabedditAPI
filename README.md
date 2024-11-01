@@ -7,6 +7,9 @@ STACKS: Node.js (typescript), Express, Knex, SQLite
  ### Documentation
  _https://documenter.getpostman.com/view/21445204/2s9YysE2hR_
 
+ ### DEPLOY
+ _https://labedditapi-a7lj.onrender.com_
+
 
  ### Types and interfaces
 
